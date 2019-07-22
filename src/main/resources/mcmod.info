@@ -1,7 +1,7 @@
 [
 {
   "modid": "celestia",
-  "name": "&bCelestia",
+  "name": "§bCelestia",
   "description": "Because in Minecraft, space is the final frontier! :D",
   "version": "${version}",
   "mcversion": "${mcversion}",
