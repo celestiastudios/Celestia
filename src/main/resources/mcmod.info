@@ -1,0 +1,16 @@
+[
+{
+  "modid": "celestia",
+  "name": "&bCelestia",
+  "description": "Because in Minecraft, space is the final frontier! :D",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://github.com/CelestiaStudios/Celestia",
+  "updateUrl": "",
+  "authorList": ["Dewy", "Celestia Studios", "Contributors"],
+  "credits": "The wonderful community of Modding+, for encouraging me to make this mod.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
