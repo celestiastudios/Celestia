@@ -19,14 +19,27 @@
 
 package celestia;
 
+import celestia.init.CelestiaItems;
+import celestia.proxy.ClientProxy;
 import celestia.proxy.CommonProxy;
+import celestia.utils.CelestiaCreativeTab;
+import celestia.utils.CelestiaUtils;
 import celestia.utils.Constants;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.*;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.LinkedList;
 
 @Mod(
           modid = Constants.MOD_ID,
@@ -42,15 +55,26 @@ public class Celestia
     @SidedProxy(clientSide = Constants.CLIENT_PROXY_PATH, serverSide = Constants.COMMON_PROXY_PATH)
     public static CommonProxy proxy;
 
+    public static CelestiaCreativeTab celestiaItems;
+
+    public static LinkedList<ItemStack> itemList = new LinkedList<>();
+    public static LinkedList<Item> itemListTrue = new LinkedList<>();
+
     @EventHandler
     public void onPreInit(FMLPreInitializationEvent event)
     {
         proxy.onPreInit(event);
+
+        Celestia.celestiaItems = new CelestiaCreativeTab(CreativeTabs.getNextID(), "celestia_items", null, null);
+
+        CelestiaItems.initItems();
     }
 
     @EventHandler
     public void onInit(FMLInitializationEvent event)
     {
+        Celestia.celestiaItems.setItemForTab(new ItemStack(CelestiaItems.cheeseWheel));
+
         proxy.onInit(event);
     }
 
@@ -58,5 +82,30 @@ public class Celestia
     public void onPostInit(FMLPostInitializationEvent event)
     {
         proxy.onPostInit(event);
+    }
+
+    @EventBusSubscriber(modid = Constants.MOD_ID)
+    public static class RegistrationHandler
+    {
+        @SubscribeEvent
+        public static void registerItems(RegistryEvent.Register<Item> event)
+        {
+            CelestiaItems.registerItems(event.getRegistry());
+
+            //RegisterSorted for blocks cannot be run until all the items have been registered
+            if (CelestiaUtils.getEffectiveSide() == Side.CLIENT)
+            {
+                for (Item item : Celestia.itemListTrue)
+                {
+                    CelestiaItems.registerSorted(item);
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void registerModels(ModelRegistryEvent event)
+        {
+            proxy.registerVariants();
+        }
     }
 }

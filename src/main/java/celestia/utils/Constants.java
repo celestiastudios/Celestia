@@ -32,7 +32,7 @@ public class Constants
     public static final int VERSION_MAJ = 1; // Major Version
     public static final int VERSION_MIN = 0; // Minor Version
     public static final int VERSION_PAT = 0; // Patch Version
-    public static final String VERSION_BLD = " build 0000b"; // Build Number
+    public static final String VERSION_BLD = " build 0121a"; // Build Number
 
     public static final String VERSION_SIMPLE = VERSION_MAJ + "." + VERSION_MIN + "." + VERSION_PAT; // Very simple, numbers only
     public static final String VERSION_DISPLAY = VERSION_CAT + VERSION_SIMPLE; // Displays version category too
@@ -42,4 +42,7 @@ public class Constants
 
     public static final String COMMON_PROXY_PATH = "celestia.proxy.CommonProxy";
     public static final String CLIENT_PROXY_PATH = "celestia.proxy.ClientProxy";
+
+    public static final String ASSET_PREFIX = "celestia";
+    public static final String TEXTURE_PREFIX = ASSET_PREFIX + ":";
 }

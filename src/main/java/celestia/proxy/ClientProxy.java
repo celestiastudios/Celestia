@@ -19,12 +19,35 @@
 
 package celestia.proxy;
 
+import celestia.init.CelestiaItems;
+import celestia.utils.ClientUtils;
+import celestia.utils.Constants;
+import com.google.common.collect.Lists;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
+import java.util.List;
+
 public class ClientProxy extends CommonProxy
 {
+    public static EnumRarity celestiaItem = EnumHelper.addRarity("CelestiaRarity", TextFormatting.AQUA, "Celestial");
+    private static List<Item> itemsToRegisterJson = Lists.newArrayList();
+
     @Override
     public void onPreInit(FMLPreInitializationEvent event)
     {
@@ -32,8 +55,16 @@ public class ClientProxy extends CommonProxy
     }
 
     @Override
+    public void registerVariants()
+    {
+        ClientProxy.addVariants();
+    }
+
+    @Override
     public void onInit(FMLInitializationEvent event)
     {
+        ClientProxy.registerInventoryJsons();
+
         super.onInit(event);
     }
 
@@ -41,5 +72,34 @@ public class ClientProxy extends CommonProxy
     public void onPostInit(FMLPostInitializationEvent event)
     {
         super.onPostInit(event);
+    }
+
+    @Override
+    public void postRegisterItem(Item item)
+    {
+        if (!item.getHasSubtypes())
+        {
+            ClientProxy.itemsToRegisterJson.add(item);
+        }
+    }
+
+    private static void registerInventoryJsons()
+    {
+        for (Item toReg : ClientProxy.itemsToRegisterJson)
+        {
+            ClientUtils.registerItemJson(Constants.TEXTURE_PREFIX, toReg);
+        }
+
+        ClientUtils.registerItemJson(Constants.TEXTURE_PREFIX, CelestiaItems.cheeseWheel, 0, "cheese_wheel");
+    }
+
+    private static void addVariants()
+    {
+        addCoreVariant("food", "cheese_curd");
+    }
+
+    private static void addCoreVariant(String name, String... variants)
+    {
+        ClientUtils.addVariant(Constants.MOD_ID, name, variants);
     }
 }
