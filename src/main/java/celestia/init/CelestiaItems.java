@@ -6,13 +6,16 @@ import celestia.items.ItemCheeseWheel;
 import celestia.utils.CelestiaUtils;
 import celestia.utils.item.SortCategoryItem;
 import celestia.utils.item.StackSorted;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -83,5 +86,28 @@ public class CelestiaItems
         {
             registry.register(item.getItem());
         }
+    }
+
+    public static void finalizeSort()
+    {
+        List<StackSorted> itemOrderListItems = Lists.newArrayList();
+
+        for (SortCategoryItem type : SortCategoryItem.values())
+        {
+            List stackSorteds = sortMapItems.get(type);
+
+            if (stackSorteds != null)
+            {
+                itemOrderListItems.addAll(stackSorteds);
+            }
+            else
+            {
+                System.out.println("ERROR: null sort stack: " + type.toString());
+            }
+        }
+
+        Comparator<ItemStack> tabSorterItems = Ordering.explicit(itemOrderListItems).onResultOf(input -> new StackSorted(input.getItem(), input.getItemDamage()));
+
+        Celestia.celestiaItems.setTabSorter(tabSorterItems);
     }
 }

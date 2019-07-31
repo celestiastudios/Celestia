@@ -1,0 +1,22 @@
+{
+    "textures": {
+        "particle": "celestia:blocks/cheese_2",
+        "bottom": "celestia:blocks/cheese_1",
+        "top": "celestia:blocks/cheese_1",
+        "side": "celestia:blocks/cheese_2",
+        "inside": "celestia:blocks/cheese_3"
+    },
+    "elements": [
+        {   "from": [ 13, 0, 1 ],
+            "to": [ 15, 8, 15 ],
+            "faces": {
+                "down":  { "texture": "#bottom", "cullface": "down" },
+                "up":    { "texture": "#top" },
+                "north": { "texture": "#side" },
+                "south": { "texture": "#side" },
+                "west":  { "texture": "#inside" },
+                "east":  { "texture": "#side" }
+            }
+        }
+    ]
+}

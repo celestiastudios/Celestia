@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "bites=0": { "model": "celestia:cheese_uneaten_model" },
+        "bites=1": { "model": "celestia:cheese_slice1_model" },
+        "bites=2": { "model": "celestia:cheese_slice2_model" },
+        "bites=3": { "model": "celestia:cheese_slice3_model" },
+        "bites=4": { "model": "celestia:cheese_slice4_model" },
+        "bites=5": { "model": "celestia:cheese_slice5_model" },
+        "bites=6": { "model": "celestia:cheese_slice6_model" }
+    }
+}

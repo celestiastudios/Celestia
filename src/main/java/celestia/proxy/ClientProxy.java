@@ -19,6 +19,7 @@
 
 package celestia.proxy;
 
+import celestia.init.CelestiaBlocks;
 import celestia.init.CelestiaItems;
 import celestia.utils.ClientUtils;
 import celestia.utils.Constants;
@@ -91,6 +92,8 @@ public class ClientProxy extends CommonProxy
         }
 
         ClientUtils.registerItemJson(Constants.TEXTURE_PREFIX, CelestiaItems.cheeseWheel, 0, "cheese_wheel");
+
+        ClientUtils.registerBlockJson(Constants.TEXTURE_PREFIX, CelestiaBlocks.cheeseBlock);
     }
 
     private static void addVariants()

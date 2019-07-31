@@ -19,17 +19,21 @@
 
 package celestia;
 
+import celestia.init.CelestiaBlocks;
 import celestia.init.CelestiaItems;
 import celestia.proxy.ClientProxy;
 import celestia.proxy.CommonProxy;
 import celestia.utils.CelestiaCreativeTab;
 import celestia.utils.CelestiaUtils;
 import celestia.utils.Constants;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.*;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -56,9 +60,16 @@ public class Celestia
     public static CommonProxy proxy;
 
     public static CelestiaCreativeTab celestiaItems;
+    public static CelestiaCreativeTab celestiaBlocks;
 
     public static LinkedList<ItemStack> itemList = new LinkedList<>();
     public static LinkedList<Item> itemListTrue = new LinkedList<>();
+    public static LinkedList<Block> blocksList = new LinkedList<>();
+
+    static
+    {
+        FluidRegistry.enableUniversalBucket();
+    }
 
     @EventHandler
     public void onPreInit(FMLPreInitializationEvent event)
@@ -66,14 +77,23 @@ public class Celestia
         proxy.onPreInit(event);
 
         Celestia.celestiaItems = new CelestiaCreativeTab(CreativeTabs.getNextID(), "celestia_items", null, null);
+        Celestia.celestiaBlocks = new CelestiaCreativeTab(CreativeTabs.getNextID(), "celestia_blocks", null, null);
 
         CelestiaItems.initItems();
+        CelestiaBlocks.initBlocks();
     }
 
     @EventHandler
     public void onInit(FMLInitializationEvent event)
     {
         Celestia.celestiaItems.setItemForTab(new ItemStack(CelestiaItems.cheeseWheel));
+        Celestia.celestiaBlocks.setItemForTab(new ItemStack(Item.getItemFromBlock(CelestiaBlocks.cheeseBlock)));
+
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+        {
+            CelestiaBlocks.finalizeSort();
+            CelestiaItems.finalizeSort();
+        }
 
         proxy.onInit(event);
     }
@@ -88,6 +108,12 @@ public class Celestia
     public static class RegistrationHandler
     {
         @SubscribeEvent
+        public static void registerBlocks(RegistryEvent.Register<Block> event)
+        {
+            CelestiaBlocks.registerBlocks(event.getRegistry());
+        }
+
+        @SubscribeEvent
         public static void registerItems(RegistryEvent.Register<Item> event)
         {
             CelestiaItems.registerItems(event.getRegistry());
@@ -98,6 +124,11 @@ public class Celestia
                 for (Item item : Celestia.itemListTrue)
                 {
                     CelestiaItems.registerSorted(item);
+                }
+
+                for (Block block : Celestia.blocksList)
+                {
+                    CelestiaBlocks.registerSorted(block);
                 }
             }
         }

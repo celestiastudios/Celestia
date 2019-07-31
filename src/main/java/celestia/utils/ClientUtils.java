@@ -1,5 +1,6 @@
 package celestia.utils;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -31,5 +32,15 @@ public class ClientUtils
     {
 //        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(texturePrefix + name, "inventory"));
         FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().register(item, meta, new ModelResourceLocation(texturePrefix + name, "inventory"));
+    }
+
+    public static void registerBlockJson(String texturePrefix, Block block)
+    {
+        registerBlockJson(texturePrefix, block, 0, block.getTranslationKey().substring(5));
+    }
+
+    public static void registerBlockJson(String texturePrefix, Block block, int meta, String name)
+    {
+        FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), meta, new ModelResourceLocation(texturePrefix + name, "inventory"));
     }
 }
