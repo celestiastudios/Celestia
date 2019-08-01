@@ -63,4 +63,25 @@ public class CelestiaUtils
 
         return ret;
     }
+
+    public static String translateWithFormat(String key, Object... values)
+    {
+        String result = I18n.translateToLocalFormatted(key, values);
+
+        int comment = result.indexOf('#');
+
+        String ret = (comment > 0) ? result.substring(0, comment).trim() : result;
+
+        for (int i = 0; i < key.length(); ++i)
+        {
+            Character c = key.charAt(i);
+
+            if (Character.isUpperCase(c))
+            {
+                System.err.println(ret);
+            }
+        }
+
+        return ret;
+    }
 }

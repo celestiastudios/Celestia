@@ -3,4 +3,6 @@ item_group.celestia_blocks=Celestia Blocks
 
 item.cheese_wheel.name=Cheese Wheel
 
-tile.cheese.name=Cheese
+tile.cheese.name=Cheese Block
+
+tile.cheese.description=A simple block of cheese. Ripe for consumption.
